@@ -3,8 +3,8 @@ use Phalcon\Cache\Backend\File;
 use Phalcon\Cache\Frontend\Data;
 
 /**
- * Class ArrayExtensions for PhalconPHP
- * @author Jean-François CAMBOT, toArrayRecursive : from PHP DOC
+ * ArrayExtensions, classe pour PhalconPHP
+ * @author Jean-François CAMBOT, toArrayRecursive : de PHP DOC
  * @version 1.1
  */
 class ArrayExtensions
