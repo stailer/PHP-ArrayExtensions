@@ -3,9 +3,9 @@ use Phalcon\Cache\Backend\File;
 use Phalcon\Cache\Frontend\Data;
 
 /**
- * ArrayExtensions, classe pour PhalconPHP
- * @author Jean-François CAMBOT, toArrayRecursive : de PHP DOC
- * @version 1.1
+ * Class ArrayExtensions
+ * @author Jean-François CAMBOT, toArrayRecursive : from PHP DOC
+ * @version 1.2
  */
 class ArrayExtensions
 {
@@ -137,8 +137,16 @@ class ArrayExtensions
                 $t = explode(" ", $searchAttribute);
                 $c = ($formatAttribute != null) ?  explode(" ", $formatAttribute) : array();
 
+                if (isset($c[1]))
+                {
+                    array_shift($c);
+                    $c = implode(' ', $c);
+                }
+                else
+                    $c = null;
+
                 if (isset($t[0]) && trim($t[0]) == '@var' ) {
-                    $annotations[] = array('name' => $pr->getName(), 'typage' => trim($t[1]), 'format' => isset($c[1]) ?  $c[1] :  null  );
+                    $annotations[] = array('name' => $pr->getName(), 'typage' => trim($t[1]), 'format' => $c  );
                 }
             }
         }
