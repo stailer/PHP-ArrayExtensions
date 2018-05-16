@@ -4,7 +4,7 @@ For PhalconPHP - automatic cast from array
 
 # Class mapping :
 
-<?php
+
 trait TraitClientsCommandesSimple
 {
     /**
@@ -63,7 +63,7 @@ class ClientsCommandesSimple
     public $montant;
 
 }
-?>
+
 
 # Simple example :
 
