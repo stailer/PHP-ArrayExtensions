@@ -1,11 +1,10 @@
 <?php
-use Phalcon\Cache\Backend\File;
 use Phalcon\Cache\Frontend\Data;
-
+use Phalcon\Cache\Backend\Memory;
 /**
  * Class ArrayExtensions
  * @author Jean-François CAMBOT, toArrayRecursive : from PHP DOC
- * @version 1.2
+ * @version 1.3
  */
 class ArrayExtensions
 {
@@ -26,7 +25,7 @@ class ArrayExtensions
     public function __construct($cacheDir =  APP_PATH . '/cache/', $lifetime = 172800)
     {
         $frontCache = new Data(['lifetime' => $lifetime]);
-        $this->cache = new File($frontCache, ['cacheDir' => $cacheDir]);
+        $this->cache = new Memory($frontCache);
     }
 
 
