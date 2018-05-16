@@ -4,7 +4,7 @@ use Phalcon\Cache\Backend\Memory;
 /**
  * Class ArrayExtensions
  * @author Jean-François CAMBOT, toArrayRecursive : from PHP DOC
- * @version 1.3
+ * @version 1.4
  */
 class ArrayExtensions
 {
@@ -82,7 +82,8 @@ class ArrayExtensions
             }
         }
 
-        return $object;
+
+        return  (method_exists($object, 'render')) ? $object->render() : $object;
     }
 
 
