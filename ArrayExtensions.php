@@ -1,34 +1,42 @@
 <?php
 use Phalcon\Cache\Frontend\Data;
 use Phalcon\Cache\Backend\Memory;
+use Phalcon\Cache\Backend\File;
+
 /**
  * Class ArrayExtensions
- * @author Jean-François CAMBOT, toArrayRecursive : from PHP DOC
- * @version 1.4
+ * @author Jean-François CAMBOT
+ * @version 1.0.1
  */
 class ArrayExtensions
 {
     private $pattern = "#(@[a-zA-Z]+\s*[a-zA-Z0-9, ()_].*)#";
     private $session_save_annotations = 'SaveArrayExtensionsAnnotations_';
 
-    /**
-     * @var File
-     */
-    private $cache;
+
+    private $cache = null;
 
 
-    /**
-     * Le constructeur sert à paramétrer le cache d'annotations
-     * @param string $cacheDir
-     * @param int $lifetime
-     */
-    public function __construct($cacheDir =  APP_PATH . '/cache/', $lifetime = 172800)
-    {
-        $frontCache = new Data(['lifetime' => $lifetime]);
-        $this->cache = new Memory($frontCache);
+    public function __construct() {
+
     }
 
 
+    /**
+     * Permet de paramétrer un type de cache avant utilisation, sinon Memory par défaut
+     * @param string $typeCache Memory ou File
+     * @param int $lifetime
+     * @param string $cacheDir ne sera utilisé que sur le cache fichier
+     */
+    public function activeCache($typeCache = 'Memory', $lifetime = 172800, $cacheDir =  APP_PATH . '/cache/')
+    {
+        $frontCache = new Data(['lifetime' => $lifetime]);
+
+        if ($typeCache == 'Memory')
+            $this->cache = new Memory($frontCache);
+        else if ($typeCache == 'File')
+            $this->cache = new File($frontCache,  ['cacheDir' => $cacheDir]);
+    }
 
 
     /**
@@ -39,6 +47,9 @@ class ArrayExtensions
      */
     public function toObject(array $arr,  $object)
     {
+        if ($this->cache == null)
+            $this->activeCache();
+
         $annotations = $this->getClassAnnotations($object);
 
         foreach($annotations as $annotation)
@@ -160,6 +171,9 @@ class ArrayExtensions
     /**
      * Retourne récursivement un objet en tableau, sans cast
      * Méthode récupérée sur la doc PHP
+	 * 
+	 * !! from PHP DOC, not use in this class form moment !!
+	 * 
      * @param $object
      * @param bool $assoc
      * @param string $empty
