@@ -2,7 +2,7 @@
 For PhalconPHP - automatic cast from array
 
 
-Class mapping :
+# Class mapping :
 
 class ClientsCommandesSimple
 {
@@ -23,7 +23,7 @@ class ClientsCommandesSimple
 
     /**
      * @var DateTime
-     * @format Y-m-d
+     * @format Y-m-d H:i:s
      */
     public $date_commande;
 
@@ -42,31 +42,29 @@ class ClientsCommandesSimple
      */
     public $formateuro;
 
-
-    /**
-     * @var string
-     */
-    public $date_commande_str ;
 }
 
 
-Simple example :
+# Simple example :
 
- $results = $this->modelsManager->createBuilder()
+		$results = $this->modelsManager->createBuilder()
             ->columns('Clients.*, ClientsCommandes.*')
             ->from('Clients')
             ->innerJoin('ClientsCommandes')
             ->getQuery()
             ->execute();
 
-       
-        $obj = new ArrayExtensions();
         $data = array();
+        $obj = new ArrayExtensions();
+
         foreach ($results as $result)
         {
-            $res = array_merge( $result->clients->toArray(), $result->clientsCommandes->toArray());
-            
-            $data[] = $obj->toObject($res, new ClientsCommandesSimple());
+            $res = $obj->toObject( array_merge( $result->clients->toArray(), $result->clientsCommandes->toArray()), new ClientsCommandesSimple());
+
+            if ($res instanceof ClientsCommandesSimple) // for automplete object in EDI
+            {
+                $data[] = $res;
+            }
         }
 
         return $data;
