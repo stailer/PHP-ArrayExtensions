@@ -4,6 +4,7 @@ For PhalconPHP - automatic cast from array
 
 # Class mapping :
 
+<?php
 trait TraitClientsCommandesSimple
 {
     /**
@@ -61,14 +62,12 @@ class ClientsCommandesSimple
      */
     public $montant;
 
-
-
 }
-
+?>
 
 # Simple example :
 
-		$sql = $this->modelsManager->createBuilder()
+	$sql = $this->modelsManager->createBuilder()
             ->columns('Clients.id as id, nom, prenom, date_commande, numero, montant')
             ->from('Clients')
             ->innerJoin('ClientsCommandes')
