@@ -6,7 +6,7 @@ use Phalcon\Cache\Backend\File;
 /**
  * Class ArrayExtensions
  * @author Jean-François CAMBOT
- * @version 1.0.1
+ * @version 1.0.3
  */
 class ArrayExtensions
 {
@@ -70,8 +70,11 @@ class ArrayExtensions
                         if ($annotation['format'] == null)
                             throw new Exception('La propriété @var DateTime attend également un attribut @format format_date');
 
+                        $format = trim($annotation['format']);
+                        $date = $arr[$annotation['name']];
 
-                        $object->{$annotation['name']} = DateTime::createFromFormat(trim($annotation['format']), $arr[$annotation['name']]);
+                        $d = DateTime::createFromFormat($format, $date);
+                        $object->{$annotation['name']}  = ($d && $d->format($format) == $date) ? $d : null;
 
                     break;
 
@@ -96,6 +99,8 @@ class ArrayExtensions
 
         return  (method_exists($object, 'render')) ? $object->render() : $object;
     }
+
+
 
 
     /**
@@ -125,7 +130,7 @@ class ArrayExtensions
 
 
         $r = new ReflectionObject($class);
-        $pros = $r->getProperties();
+        $pros = $r->getProperties(ReflectionProperty::IS_PUBLIC);
 
         $annotations = array();
         foreach ($pros as $pr)
@@ -168,7 +173,7 @@ class ArrayExtensions
     }
 
 
-    /**
+   /**
      * Retourne récursivement un objet en tableau, sans cast
      * Méthode récupérée sur la doc PHP
 	 * 
@@ -203,6 +208,5 @@ class ArrayExtensions
 
         return $out_arr;
     }
-
 
 }
